@@ -1,0 +1,22 @@
+{
+  "name": "haimeda_core",
+  "version": "0.1.0",
+  "description": "HAIMEDA Core Modules",
+  "scripts": {
+    "deploy": "mix assets.deploy",
+    "watch": "mix assets.build --watch"
+  },
+  "dependencies": {
+    "@tiptap/core": "^2.1.11",
+    "@tiptap/extension-placeholder": "^2.1.11",
+    "@tiptap/pm": "^2.1.11",
+    "@tiptap/starter-kit": "^2.1.11",
+    "prosemirror-state": "^1.4.3"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.0.0",
+    "autoprefixer": "^10.0.0",
+    "postcss": "^8.0.0",
+    "esbuild": "^0.8.0"
+  }
+}

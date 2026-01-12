@@ -1,0 +1,149 @@
+/* Custom window styling */
+
+/* Dark title bar styling */
+.desktop-titlebar {
+  background-color: #333333 !important; /* Dark grey title bar */
+  color: #ffffff !important; /* White text */
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  -webkit-app-region: drag; /* Makes the title bar draggable */
+}
+
+.titlebar-title {
+  margin-left: 12px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: #ffffff !important;
+}
+
+/* Make window buttons (close, minimize, maximize) non-draggable */
+.titlebar-buttons {
+  -webkit-app-region: no-drag !important;
+}
+
+/* Customize window controls */
+.titlebar-button {
+  width: 14px !important;
+  height: 14px !important;
+  margin-right: 8px !important;
+  border-radius: 50% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  -webkit-app-region: no-drag !important;
+}
+
+/* Ensure content below titlebar fits properly */
+.desktop-content {
+  height: calc(100vh - 32px) !important; /* Adjust for titlebar height */
+  margin-top: 32px !important; /* Add margin for titlebar */
+}
+
+/* Global styles for the desktop window */
+html,
+body {
+  background-color: #222222;
+  color: #ffffff;
+}
+
+/* Class applied to body when in editor mode */
+body.editor-page {
+  background-color: #222222;
+}
+
+/* When using a frameless window, this helps create a custom titlebar */
+.app-drag-region {
+  -webkit-app-region: drag;
+  height: 32px;
+}
+
+.app-no-drag {
+  -webkit-app-region: no-drag;
+}
+
+/* Custom desktop window styles */
+.desktop-window {
+  background-color: #222222;
+  border: 1px solid #333333;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Window specific styles */
+body.editor-page {
+  background-color: #222222;
+}
+
+/* Make sure the content area and form inputs have black text on white background */
+.editor-content-area {
+  color: #000000;
+  background-color: #ffffff;
+}
+
+/* Ensure all form inputs have black text */
+input,
+textarea,
+select {
+  color: #000000 !important;
+  background-color: #ffffff !important;
+}
+
+/* Style for the editor tab content */
+.editor-tab-content {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.editor-window {
+  background-color: #222222;
+  color: #ffffff;
+}
+
+/* Dark mode for standard elements */
+.dark-bg {
+  background-color: #222222;
+}
+
+.dark-text {
+  color: #ffffff;
+}
+
+/* Rich blue header color */
+.header-blue {
+  background-color: #1e40af;
+  border-color: #1e3a8a;
+}
+
+/* Editor layout specific styles */
+#editor-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Make the right content area scroll independently */
+.editor-content-scrollable {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Keep tab titles fixed */
+.tab-title-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: white;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Add smooth scrolling to all tab content */
+.tab-content-scroll {
+  height: calc(
+    100vh - 130px
+  ); /* Adjust based on your header + tab bar height */
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}

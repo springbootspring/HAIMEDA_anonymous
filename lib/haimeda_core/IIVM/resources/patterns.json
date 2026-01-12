@@ -1,0 +1,44 @@
+{
+  "patterns": {
+    "example_markers": {
+      "markers": [
+        "example",
+        "sample",
+        "like",
+        "such as",
+        "e.g.",
+        "following",
+        "matches",
+        "match this",
+        "for"
+      ],
+      "separator_markers": [
+        ",",
+        ";",
+        "and",
+        "or",
+        "\n-",
+        "\n•",
+        "\n*",
+        "example 1",
+        "example 2",
+        "first",
+        "second",
+        "another example"
+      ]
+    },
+    "pattern_markers": {
+      "content_patterns": [
+        "'[^']*'",
+        "\"[^\"]*\"",
+        "\\[[^\\]]*\\]",
+        "<[^>]*>",
+        "`[^`]*`",
+        "\\{[^\\}]*\\}"
+      ]
+    },
+    "special_chars": {
+      "regex_special_chars": "[\\[\\]\\{\\}\\(\\)\\*\\+\\?\\|\\\\\\^\\$\\.\\#\\&\\%\\@\\!\\~\\°\\§\\=\\_\\-\\:\\/]"
+    }
+  }
+}

@@ -1,0 +1,52 @@
+.custom-titlebar {
+  height: 32px;
+  background-color: #222222; /* Dark grey */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  user-select: none;
+  color: white;
+}
+
+.titlebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.titlebar-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.titlebar-title {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.titlebar-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.titlebar-button {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  background-color: transparent;
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.titlebar-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.titlebar-close:hover {
+  background-color: #e81123;
+}

@@ -1,0 +1,89 @@
+General:
+  - verbose_console_output: false
+  - show_performance_outputs: false
+  # use LX for Linux OS, Win for Windows OS
+  - local_OS: Win
+
+IIVM:
+  # if true, only uses symbolic AI for verification, no hybrid AI statement verification
+  - disable_hybrid_postprocessing: true
+
+LLMs:
+  - path_to_local_LLM_models: ${HOME}/.cache/gguf_models
+  # if true, and the systems detects that there is not enough VRAM available for the LLM,
+  # it will try to use the same model with quantization
+  - auto_switch_to_quantized_models: true
+  # overwriting and integrating models can be quiet time-consuming,
+  # only set this to true if models with same name have been updated
+  - overwrite_existing_ollama_models_with_same_name: false
+  - use_remote_ollama_models: false
+  - ollama_server_url: http://localhost:11434
+  - remote_models:
+      [
+        llama3_german_instruct,
+        llama3_german_v1-b,
+        llama3_german_v3,
+        llama3_german_v3_q8_0,
+        llama3_german_v1-b_q8_0,
+      ]
+
+RAG:
+  # if true, only existing vector DB from MongoDB is used for RAG, no new local files are considered
+  - only_use_existing_vector_db: true
+  # set path to the extracted JSON files of former MDB
+  - mdb_files_path: ${HOME}/.cache/mdb_files
+  # uses folder names inside parent path as keys in the DB (report IDs for this case)
+  - path_to_parent_folder_for_RAG_files: ${HOME}/RAG
+  # subcollections for each subfolder in parent path / report ID
+  - vector_subcollections:
+      # name of subcollection in DB: name of file in each subfolder of parent path
+      - meta_vectors: extracted_meta_info.json
+      - report_vectors: full_report.md
+      - single_chapter_vectors: single_chapters/*.md
+  - chunking_subcollections:
+      - single_chapter_vectors: :file_per_chunk
+  - enable_tracking_changed_files: false
+  - embedding_model: nomic-embed-text
+  - combine_mdb_and_vector_results: false
+  # can be increased for larger models, or models with larger context windows
+  # related to results from vector search, where potential results from MDB are added additionally with a factor of 1/3
+  # e.g., 15000 + (1/3 * 15000) = 20000
+  - maximum_rag_context_characters: 12000
+  - model_name_general: llama3_german_instruct_q8_0
+  - model_name_rag: llama3_german_v1-b_q8_0
+  - model_params:
+      - temperature: 0.2
+      - top_p: 0.5
+      - top_k: 50
+      - max_tokens: 6144
+      - repeat_penalty: 1.1
+
+LLM_Config:
+  - Text_Optimization:
+      # This will now work with either llama3_german_v3 or llama3_german_V3
+      - model_name: llama3_german_v3
+      - model_params:
+          - temperature: 0.4
+          - top_p: 0.6
+          - top_k: 60
+          - max_tokens: 4096
+          - repeat_penalty: 1.1
+
+  - Text_Revision:
+      # This will now work with either llama3_german_v3 or llama3_german_V3
+      - model_name: llama3_german_v3
+      - model_params:
+          - temperature: 0.2
+          - top_p: 0.6
+          - top_k: 45
+          - max_tokens: 4096
+          - repeat_penalty: 1.3
+
+  - Text_Summarization:
+      - model_name: llama3_german_instruct
+      - model_params:
+          - temperature: 0.1
+          - top_p: 0.5
+          - top_k: 40
+          - max_tokens: 2048
+          - repeat_penalty: 1.2

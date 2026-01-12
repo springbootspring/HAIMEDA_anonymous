@@ -1,0 +1,89 @@
+{
+  "chapter_creation_system_prompt": "Du bist ein spezialisierter Assistent, der einem Gutachter dabei helfen soll, Kapitel eines Gutachtens über ein Medizinprodukt zu verfassen. \nOrientiere dich bei der Struktur, dem Format und dem Schreibstil stark an deinen bisherigen Trainingsdaten. \nBeschreibe nur Inhalte, die explizit in den vorliegenden Informationen genannt werden.",
+
+  "chapter_creation_task": "Erstelle einen Kapitelinhalt für [KAPITEL <%= @chapter_num %>: <%= @chapter_name %>] eines Gutachtens mit den folgenden Informationen",
+
+  "chapter_creation_base": "[INST]\n<%= @task %>:\n\n<%= @previous_content %>\n\n<%= @meta_data %>\n\n[KAPITEL <%= @chapter_num %>: <%= @chapter_name %>]\n\n<%= @current_chapter_summary %>\n[/INST]",
+
+  "chapter_creation_base_no_previous_content": "[INST]\n<%= @task %>:\n\n<%= @meta_data %>\n\n[KAPITEL <%= @chapter_num %>: <%= @chapter_name %>]\n<%= @current_chapter_summary %>\n[/INST]",
+
+  "chapter_creation_base_technical": "[INST]\n<%= @task %>:\n\n<%= @previous_content %>\n\n<%= @meta_data %>\n\n[KAPITEL <%= @chapter_num %>: <%= @chapter_name %>]\n\n[/INST]",
+
+  "chapter_creation_previous_content_chapters": "[VORHERIGE INHALTE]\n<%= @previous_content %>\n[ENDE VORHERIGE INHALTE]",
+
+  "chapter_creation_previous_main_chapter_no_content": "[KAPITEL <%= @chapter_num %>: <%= @chapter_name %>]\n<%= @previous_sub_chapters %>\n[ENDE KAPITEL <%= @chapter_num %>]\n\n<%= @previous_chapter_following %>",
+
+  "chapter_creation_previous_main_chapter_with_content": "[KAPITEL <%= @chapter_num %>: <%= @chapter_name %>]\n<%= @chapter_content %>\n\n<%= @previous_sub_chapters %>\n[ENDE KAPITEL <%= @chapter_num %>]\n\n<%= @previous_chapter_following %>",
+
+  "chapter_creation_previous_main_chapter_no_closing": "[KAPITEL <%= @chapter_num %>: <%= @chapter_name %>]\n<%= @chapter_content %>\n\n<%= @previous_sub_chapters %>",
+
+  "chapter_creation_previous_main_chapter_no_closing_no_content": "[KAPITEL <%= @chapter_num %>: <%= @chapter_name %>]\n<%= @previous_sub_chapters %>",
+
+  "chapter_creation_previous_sub_chapter": "[KAPITEL <%= @chapter_num %>: <%= @chapter_name %>]\n<%= @chapter_content %>\n[ENDE KAPITEL <%= @chapter_num %>]\n\n<%= @previous_chapter_following %>",
+
+  "chapter_creation_previous_sub_chapter_closing": "[KAPITEL <%= @chapter_num %>: <%= @chapter_name %>]\n<%= @chapter_content %>\n[ENDE KAPITEL <%= @chapter_num %>]",
+
+  "chapter_creation_previous_content_summaries": "[ZUSAMMENFASSUNG VORHERIGE INHALTE]\n<%= @previous_content %>\n[ENDE ZUSAMMENFASSUNG VORHERIGE INHALTE]",
+
+  "chapter_creation_previous_main_summary": "[ZUSAMMENFASSUNG VON KAPITEL <%= @chapter_num %>: <%= @chapter_name %>]\n<%= @previous_summary_content %>\n[ENDE ZUSAMMENFASSUNG VON KAPITEL <%= @chapter_num %>]",
+
+  "chapter_creation_previous_sub_summary_closing": "[ZUSAMMENFASSUNG VON KAPITEL <%= @chapter_num %>: <%= @chapter_name %>]\n<%= @previous_summary_content %>\n[ENDE ZUSAMMENFASSUNG VON KAPITEL <%= @chapter_num %>]",
+
+  "chapter_creation_summary": "[KAPITELINHALTE]\n<%= @previous_summary_content %>\n[ENDE KAPITELINHALTE]\n\n<%= @previous_summary_following %>",
+
+  "chapter_creation_meta_data": "[METADATEN]\n<%= @meta_data_objects %>\n[ENDE METADATEN]",
+
+  "text_summarization_system_prompt": "Du bist ein Spezialist für die Zusammenfassung von Texten. Deine Aufgabe ist es, die wichtigsten Informationen aus einem Text zu erfassen und prägnant darzustellen. Halte dich genau an die Fakten des Originaltextes und füge keine eigenen Interpretationen hinzu. Achte auf Vollständigkeit der Kernaussagen bei gleichzeitiger angemessener Verkürzung.",
+
+  "text_summarization_base": "[INST]\n<%= @task %>\n\n<%= @examples_section %>\n\n<%= @task_2 %>\n\n[TEXT BEGINN]\n<%= @text %>\n\n[TEXT ENDE]\n\n[ZUSAMMENFASSUNG BEGINN]\n[/INST]",
+
+  "text_summarization_task": "Extrahiere die essenziellen Kernaussagen aus dem folgenden TEXT. \nGib ausschließlich die wichtigsten Informationen **in prägnanten Stichpunkten** wieder. \nZiel ist eine inhaltlich präzise, knappe Zusammenfassung. Vermeide Nebensächlichkeiten, Wiederholungen und Interpretationen. \nNutze das folgende BEISPIEL **nur als Formatvorlage**, nicht als inhaltliche Referenz.",
+
+  "text_summarization_task_2": "Analysiere und fasse nun den folgenden TEXT zusammen. \nNutze **keine Inhalte des vorherigen Beispiels** in der Zusammenfassung.",
+
+  "text_summarization_example": "[BEISPIEL TEXT BEGINN]\n\nGemäß Auftrag des [ORGANIZATION] vom [DATE], ist zu dem nachfolgend näher beschriebenen [DEVICE_TYPE] ein Schadengutachten zu erstatten. Der beauftragte Gutachtenumfang entspricht nachfolgender Gliederung:\n- beschädigtes Objekt mit technischen Daten\n- Schadenursache/-auswirkungen\n- beschädigte Teile\n- Reparaturmöglichkeiten/-kosten\n- Neu- und Zeitwert des Objektes\n- verschleißbedingte Abzüge\n- Anzahl separater Akutschäden\n- ggf. vorliegende Obliegenheitsverletzungen.\nHinweis:\nDurch das vorliegende Gutachten wird die Leistungspflicht des Versicherers weder dem Grunde, noch der Höhe nach anerkannt.\n\n[BEISPIEL TEXT ENDE]\n\n[BEISPIEL ZUSAMMENFASSUNG BEGINN]\n[ORGANIZATION] beauftragte am [DATE] ein Schadengutachten; \nBetroffenes Objekt: [DEVICE_TYPE]; \nGutachtenumfang umfasst: Objektbeschreibung mit technischen Daten, Schadenursache und -auswirkungen, Beschädigte Komponenten, Reparaturoptionen und -kosten, Neu- und Zeitwertermittlung, Verschleißbedingte Abzüge, Anzahl separater Akutschäden, Mögliche Obliegenheitsverletzungen; \nGutachten impliziert keine Anerkennung der Leistungspflicht des Versicherers\n\n[BEISPIEL ZUSAMMENFASSUNG ENDE]",
+
+  "text_optimization_system_prompt": "Du bist ein Assistent für die Verbesserung von Texten. Deine Aufgabe ist es, Texte sprachlich zu optimieren, ohne den Inhalt zu verändern. Verbessere Grammatik, Rechtschreibung und Ausdruck, aber bleibe bei einem professionellen und seriösen Ton. Der Originalinhalt muss dabei vollständig erhalten bleiben.",
+
+  "text_optimization_base": "[INST]\n<%= @task %>\n\n<%= @examples_section %>\n\n<%= @task_2 %>\n\n[TEXT BEGINN]\n<%= @text %>\n\n[TEXT ENDE]\n\n[OPTIMIERTER TEXT BEGINN]\n[/INST]",
+
+  "text_optimization_task": "Verbessere die sprachliche Qualität des folgenden TEXTES. Achte dabei auf korrekte Grammatik, präzisen Ausdruck und klare Formulierungen. \nDer **Inhalt** soll vollständig erhalten bleiben, nur die sprachliche Form soll verbessert werden. \nMache den Text gut lesbar und professionell, ohne ihn zu verkürzen oder inhaltlich zu verändern. \nNutze das folgende BEISPIEL **nur als Formatvorlage**, nicht als inhaltliche Referenz.",
+
+  "text_optimization_task_2": "Optimiere nun den folgenden TEXT sprachlich. Behalte alle Informationen bei, verbessere aber die Ausdrucksweise und Lesbarkeit. Nutze **keine Inhalte des vorherigen Beispiels** in deiner Optimierung.",
+
+  "text_optimization_example": "[BEISPIEL TEXT BEGINN]\n\nBei der Untersuchung des zur Begutachtung eingesandten Endoskops eines Herstellers konnten folgende funktionale Einschränkungen identifiziert werden. Das vorliegende Gerät zeigt eine Beschädigung der flexiblen Optik, die nach fachlicher Einschätzung durch falsche Reinigungsmethodik entstanden ist. Am Handgriff ist Abnutzung sichtbar, jedoch in normalem Umfang für ein Gerät dieses Alters und beeinträchtigt nicht die Funktionalität. Der Irrigationskanal ist verstopft und kontaminiert. Außerdem funktionieren einige Steuertasten nicht mehr zuverlässig wegen Flüssigkeitseintritt ins Gehäuse. Die elektromechanischen Komponenten sind in Ordnung, jedoch ist die Bildqualität im Vergleich zu den Referenzwerten vermindert. Eine umfassende Instandsetzung wird nötig sein, bevor das Medizinprodukt wieder für Patienten-Untersuchungen eingesetzt werden kann.\n\n[BEISPIEL TEXT ENDE]\n\n[BEISPIEL OPTIMIERTER TEXT BEGINN]\n\nBei der Untersuchung des zur Begutachtung vorliegenden Endoskops wurden folgende funktionale Einschränkungen identifiziert: Das Gerät weist eine Beschädigung der flexiblen Optik auf, die nach fachlicher Einschätzung durch nicht sachgerechte Reinigungsmethoden verursacht wurde. Am Handgriff ist Abnutzung erkennbar, die jedoch dem Alter des Geräts entspricht und keine funktionale Beeinträchtigung darstellt. Der Irrigationskanal ist mit Geweberesten verstopft und nicht mehr durchgängig. Darüber hinaus sind mehrere Steuertasten aufgrund von Flüssigkeitseintritt in das Gehäuse funktionsbeeinträchtigt. Die elektromechanischen Komponenten weisen keine Mängel auf, jedoch ist die Bildqualität im Vergleich zu den Referenzwerten deutlich vermindert. Eine umfassende Instandsetzung ist erforderlich, bevor das Medizinprodukt wieder für Patientenuntersuchungen eingesetzt werden kann.\n\n[BEISPIEL OPTIMIERTER TEXT ENDE]",
+
+  "text_revision_system_prompt": "Du bist ein Assistent für die Überarbeitung von Texten. Deine Aufgabe ist es, bestehende Texte mit neuen Informationen anzureichern. Integriere die zusätzlichen Informationen so in den Text, dass sie nahtlos zum Stil und Aufbau passen. Der ursprüngliche Inhalt soll dabei erhalten bleiben und sinnvoll ergänzt werden.",
+
+  "text_revision_base": "[INST]\n<%= @task %>\n\n<%= @examples_section %>\n\n<%= @task_2 %>\n\n[TEXT BEGINN]\n<%= @text %>\n\n[TEXT ENDE]\n\n[FEHLENDE INFORMATIONEN BEGINN]\n<%= @missing_entities %>\n\n[FEHLENDE INFORMATIONEN ENDE]\n\n[ÜBERARBEITETER TEXT BEGINN]\n[/INST]",
+
+  "text_revision_task": "Ergänze den folgenden TEXT mit den unter FEHLENDE INFORMATIONEN aufgeführten Zusatzinformationen. \nIntegriere diese neuen Informationen **an passenden Stellen** in den Text. \nDie Ergänzungen sollen sich nahtlos in den bestehenden Text einfügen und dessen Stil und Aufbau folgen. \nDer ursprüngliche Inhalt muss dabei vollständig erhalten bleiben. \nNutze das folgende BEISPIEL **nur als Formatvorlage**, nicht als inhaltliche Referenz.",
+
+  "text_revision_task_2": "Überarbeite nun den folgenden TEXT mit den angegebenen fehlenden Informationen. \nFüge alle Informationen an geeigneten Stellen ein, ohne den Originalinhalt zu verfälschen. \nNutze **keine Inhalte des vorherigen Beispiels** in deiner Überarbeitung.",
+
+  "text_revision_example": "[BEISPIEL TEXT BEGINN]\n\nGemäß schriftlichem Auftrag des [ORGANIZATION], ist zu dem nachfolgend näher beschriebenen Medizingerät ein Schadengutachten zu erstatten. Der beauftragte Gutachtenumfang entspricht folgender Gliederung:\n- beschädigtes Objekt mit technischen Daten,\n- Schadenursache/-auswirkungen,\n- beschädigte Teile,\n- Reparaturmöglichkeiten/-kosten,\n- Neu- und Zeitwert des Objektes,\n- verschleißbedingte Abzüge,\n- Anzahl separater Schadenereignisse,\n- ggf. vorliegende Obliegenheitsverletzungen.\n\n[BEISPIEL TEXT ENDE]\n\n[BEISPIEL FEHLENDE INFORMATIONEN BEGINN]\n[DATE]\n[ORGANIZATION]\n[DEVICE_TYPE]\n\n[BEISPIEL FEHLENDE INFORMATIONEN ENDE]\n\n[BEISPIEL ÜBERARBEITETER TEXT BEGINN]\n\nGemäß schriftlichem Auftrag des [ORGANIZATION] vom [DATE], ist zu dem nachfolgend näher beschriebenen [DEVICE_TYPE] ein Schadengutachten zu erstatten. Der beauftragte Gutachtenumfang entspricht folgender Gliederung:\n- beschädigtes Objekt mit technischen Daten,\n- Schadenursache/-auswirkungen,\n- beschädigte Teile,\n- Reparaturmöglichkeiten/-kosten,\n- Neu- und Zeitwert des Objektes,\n- verschleißbedingte Abzüge,\n- Anzahl separater Schadenereignisse,\n- ggf. vorliegende Obliegenheitsverletzungen.\n\n[BEISPIEL ÜBERARBEITETER TEXT ENDE]",
+
+  "user_request_system_prompt": "Du bist ein Assistent für die Analyse von medizintechnischen Gutachten. Beantworte die Frage des Nutzers präzise und informativ.",
+
+  "user_request_base": "[INST]\n<%= @task %>\n\n[FRAGE]\n<%= @questions %>\n[ENDE FRAGE]\n\n<%= @context %>\n\n[/INST]",
+
+  "user_request_task_report": "Analysiere die folgenden AUSZÜGE, um die gestellte Frage präzise zu beantworten. \nStütze dich dabei nur auf die angegebenen Informationen. \nFalls eine Frage nicht mithilfe der Informationen beantwortet werden kann, gib dies **eindeutig** an. \nWenn sich die Frage beantworten lässt, gebe auch an, aus welchem GUTACHTEN und KAPITEL die Informationen stammen, falls dies im AUSZUG genannt wird. \nZitiere jedoch **keine Nummern** der AUSZÜGE, diese dienen lediglich zur Orientierung.",
+
+  "user_request_task_mdb_2": "Verwende die folgenden DATENSÄTZE, um die gestellte Frage präzise zu beantworten. \nStütze dich dabei nur auf die angegebenen Informationen. \nFalls eine Frage nicht mithilfe der Informationen beantwortet werden kann, gib dies **eindeutig** an. \nWenn sich die Frage beantworten lässt, gebe an aus welcher TABELLE und/oder aus welchem GUTACHTEN die Informationen stammen, falls dies im DATENSATZ genannt wird und in Bezug auf die Frage Sinn ergibt. \nZitiere jedoch **keine Nummern** der DATENSÄTZE, diese dienen lediglich zur Orientierung.",
+
+  "user_request_task_mdb": "Analysiere die folgenden DATENSÄTZE sorgfältig, um die gestellte Frage präzise zu beantworten.\n\nBei deiner Analyse:\n1. PRÜFE jeden DATENSATZ auf Übereinstimmung mit den in der Frage genannten Kriterien\n2. FILTERE die Datensätze nach den angegebenen Bedingungen (z.B. Gutachten-Nr, Geräteart, Gerätetyp, Akutschäden)\n3. IDENTIFIZIERE alle passenden Einträge und ihre relevanten Attribute\n\nStütze dich ausschließlich auf die angegebenen Informationen. Vermeide Vermutungen zu nicht genannten Daten.\n\nWenn sich die Frage beantworten lässt, strukturiere deine Antwort klar und gib an, aus welcher TABELLE und welchem GUTACHTEN (falls genannt) die Informationen stammen.\n\nWenn keine Datensätze alle genannten Kriterien erfüllen, formuliere dies eindeutig und präzise.\n\nDie Nummerierung der DATENSÄTZE dient nur der Übersicht und sollte nicht zitiert werden.",
+
+  "user_request_task_combined": "Analysiere die folgenden DATENSÄTZE und AUSZÜGE sorgfältig, um die gestellte Frage präzise zu beantworten.\n\nBei deiner Analyse:\n1. PRÜFE jeden DATENSATZ UND AUSZUG auf Übereinstimmung mit den in der Frage genannten Kriterien\n2. FILTERE die Informationen nach den angegebenen Bedingungen (z.B. Hersteller, Typ, Wertbereich)\n3. IDENTIFIZIERE alle passenden Einträge und ihre relevanten Attribute\n4. KOMBINIERE bei Bedarf Informationen aus beiden Quellen für ein vollständiges Bild\n\nStütze dich ausschließlich auf die angegebenen Informationen. Vermeide Vermutungen zu nicht genannten Daten.\n\nWenn sich die Frage beantworten lässt, strukturiere deine Antwort klar und gib die Informationsquelle an:\n- Bei DATENSÄTZEN: TABELLE und GUTACHTEN (falls genannt)\n- Bei AUSZÜGEN: GUTACHTEN und KAPITEL (falls genannt)\n\nWenn keine der Daten alle genannten Kriterien erfüllen, formuliere dies eindeutig und präzise.\n\nDie Nummerierung der DATENSÄTZE und AUSZÜGE dient nur der Übersicht und sollte nicht zitiert werden.",
+
+  "user_request_task_combined_2": "Verwende die folgenden DATENSÄTZE und AUSZÜGE, um die gestellten Frage präzise zu beantworten. \nStütze dich dabei nur auf die angegebenen Informationen. \nFalls eine Frage nicht mithilfe der Informationen beantwortet werden kann, gib dies **eindeutig** an. \nWenn sich die Frage beantworten lässt, gib an aus welcher Quelle die Information stammt: \n- Bei DATENSÄTZEN: Nenne die TABELLE und/oder auch das zugehörige GUTACHTEN, wenn angegeben und wenn dies in Bezug auf die Frage Sinn ergibt \n- Bei AUSZÜGEN: Nenne das GUTACHTEN und KAPITEL (falls gegeben) \nZitiere jedoch **keine Nummern** der DATENSÄTZE oder AUSZÜGE, diese dienen lediglich zur Orientierung. \nBeachte, dass Informationen aus beiden Quelltypen sich ergänzen können.",
+
+  "user_request_task_2": "Beantworte nun die folgende Frage präzise und basierend auf den obigen KONTEXT. Falls eine Frage nicht mithilfe der Informationen beantwortet werden kann, gib dies **eindeutig** an.",
+
+  "user_request_task_no_context": "Beantworte die folgenden Frage des Nutzers präzise und sachlich. \nWenn die Frage den Medizintechnikbereich betrifft, nutze dein Fachwissen zu diesem Thema. \nBei allgemeinen Fragen verwende dein breites Wissen. \nFalls du eine Frage nicht verlässlich beantwortet werden kannst, gib dies **eindeutig** an.",
+
+  "user_request_context": "[KONTEXT]\n<%= @context_snippets %>\n\n[ENDE KONTEXT]\n\n<%= @task_2 %>\n\n[FRAGE]\n<%= @questions %>[ENDE FRAGE]",
+
+  "user_request_context_snippet_report": "[AUSZUG <%= @context_info %>]\n<%= @context_snippet %>\n\n[ENDE AUSZUG <%= @context_info %>]\n",
+
+  "user_request_context_snippet_mdb": "[DATENSATZ <%= @context_info %>]\n<%= @context_snippet %>\n\n[ENDE DATENSATZ <%= @context_info %>]\n"
+}

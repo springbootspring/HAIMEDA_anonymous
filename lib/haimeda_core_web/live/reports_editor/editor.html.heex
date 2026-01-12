@@ -1,0 +1,38 @@
+<%= if @show_JS_debug do %>
+  <div phx-hook="DebugHook" id="js-debug-hook" class="hidden" data-js-debug="true"></div>
+<% end %>
+
+<.flash_group flash={@flash} />
+<EditorSnippets.editor_layout
+  report={@report}
+  report_id={@report_id}
+  tabs={@tabs}
+  active_tab={@active_tab}
+  nav_sections={@nav_sections}
+  delete_modal={@delete_modal}
+  logs={@logs}
+  chat_messages={@chat_messages}
+  chat_input={@chat_input}
+  loading={@loading}
+  page_type={@page_type}
+  verification_count={@verification_count}
+  previous_content_mode={@previous_content_mode}
+  llm_params={Map.get(assigns, :llm_params, %{
+    "temperature" => 0.7,
+    "top_p" => 0.9,
+    "top_k" => 50,
+    "max_tokens" => 4000,
+    "repeat_penalty" => 1.1
+  })}
+  selected_llm={@selected_llm}
+  verification_degree={Map.get(assigns, :verification_degree, "Mittlere Übereinstimmung")}
+  loading={@loading}
+  ai_correction_disabled={Map.get(assigns, :ai_correction_disabled, true)}
+  confirm_changes_disabled={Map.get(assigns, :confirm_changes_disabled, true)}
+  discard_changes_disabled={Map.get(assigns, :discard_changes_disabled, true)}
+  auto_chapter_disabled={Map.get(assigns, :auto_chapter_disabled, false)}
+  manual_verification_disabled={Map.get(assigns, :manual_verification_disabled, false)}
+  ai_optimize_disabled={Map.get(assigns, :ai_optimize_disabled, false)}
+  loading_message={Map.get(assigns, :loading_message, "Lade...")}
+  llm_options={Map.get(assigns, :llm_options, [])}
+/>

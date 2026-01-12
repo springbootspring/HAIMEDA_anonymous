@@ -1,0 +1,199 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@import "./modal.css";
+@import "./window.css";
+@import "./custom_titlebar.css";
+@import "./logs_chat.css";
+@import "./resizable_panels.css";
+@import "./tiptap.css";
+
+/* This file is for your main application CSS */
+
+/* Create a dark theme for the entire application */
+.dark-theme {
+  --bg-color: #222222;
+  --text-color: #ffffff;
+  --header-bg: #1e40af; /* More blue header */
+  --header-border: #1e3a8a;
+}
+
+/* Custom scrollbar styling for the entire application */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Firefox scrollbar styling */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+/* For dark backgrounds ensure good contrast */
+.bg-gray-800 *::-webkit-scrollbar-thumb,
+.bg-gray-700 *::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* For light backgrounds */
+.bg-white *::-webkit-scrollbar-thumb,
+.bg-gray-100 *::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* Ensure the desktop app has dark scrollbars */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+/* Explicitly set text colors for editor components */
+.text-editor-black {
+  color: #000000 !important;
+}
+
+.bg-editor-white {
+  background-color: #ffffff !important;
+}
+
+/* Make sure textareas have black text on white background */
+textarea {
+  color: #000000 !important;
+  background-color: #ffffff !important;
+}
+
+/* Make tabs sticky and ensure proper z-index */
+.tabs-fixed {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Make tab titles sticky */
+.tab-title-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background-color: white;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Styles for the status/log section */
+.log-entry {
+  font-family: "Consolas", "Monaco", monospace;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+/* Chat styles */
+.chat-message {
+  transition: all 0.3s ease;
+}
+
+.chat-message-ai {
+  background-color: #f0f7ff;
+  border-left: 3px solid #3b82f6;
+}
+
+.chat-message-user {
+  background-color: #f0fdf4;
+  border-right: 3px solid #10b981;
+  text-align: right;
+}
+
+/* Ensure the editor container takes full height */
+#editor-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* TipTap Editor Styles */
+.tiptap-editor {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.tiptap-toolbar {
+  background: #f5f5f5;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tiptap-content {
+  min-height: 50vh;
+  padding: 16px;
+  outline: none;
+}
+
+.tiptap-content p {
+  margin-bottom: 1em;
+}
+
+.tiptap-content h1 {
+  font-size: 1.8em;
+  font-weight: bold;
+  margin-bottom: 0.6em;
+}
+
+.tiptap-content h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+
+.tiptap-content h3 {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 0.4em;
+}
+
+.tiptap-content ul {
+  list-style-type: disc;
+  padding-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+.tiptap-content ol {
+  list-style-type: decimal;
+  padding-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+.colored-entity {
+  position: relative;
+  padding: 0 2px;
+  display: inline-block;
+  transition: background-color 0.2s;
+}
+
+.entity-dropdown-menu {
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.entity-dropdown-item:hover {
+  background-color: #f0f0f0;
+}

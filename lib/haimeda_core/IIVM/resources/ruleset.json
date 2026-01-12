@@ -1,0 +1,421 @@
+{
+  "chapter_types": {
+    "general_chapter": {
+      "meta_information": {
+        "proof_order": [
+          "keywords",
+          "antonyms",
+          "core_conditions",
+          "meta_conditions",
+          "aggregate_conditions",
+          "attribute_conditions"
+        ],
+        "pre_checked": ["keywords", "antonyms", "core_conditions"],
+        "positive_attributes": ["score"],
+        "negative_attributes": ["penalty", "required"],
+        "base_sets": {
+          "attributes": ["score", "penalty", "required"],
+          "should_satisfy": ["satisfaction"]
+        },
+        "abbreviations": {
+          "meta_conditions": "c_m",
+          "attribute_conditions": "c_attr",
+          "aggregate_conditions": "c_aggr",
+          "core_conditions": "c_core",
+          "sat_conditions": "c_sat",
+          "unsat_conditions": "c_unsat",
+          "keywords": "kw",
+          "antonyms": "ant",
+          "attributes": "attr",
+          "required": "req",
+          "satisfaction": "sat",
+          "disatisfaction": "unsat",
+          "evaluated_conditions": "c_eval"
+        },
+        "functions": {
+          "feedback": {
+            "name": "feedback",
+            "description": "Display feedback message to user",
+            "function": "IO.puts(&1)"
+          },
+          "sum": {
+            "name": "sum",
+            "function": "&Enum.sum/1",
+            "input_type": "list"
+          },
+          "compare": {
+            "name": "compare",
+            "function": "&(Enum.uniq(&1) |> length() == 1)"
+          }
+        }
+      },
+      "conditions": {
+        "attribute_conditions": {},
+        "aggregate_conditions": {
+          "minimum_non_required_conditions": {
+            "ID": "c_aggr1",
+            "type": "maximum",
+            "eval_function": "sum",
+            "eval_on": "negative_condition",
+            "results_in": "satisfaction",
+            "eval_dimensions": ["core_conditions", "meta_conditions"],
+            "value": 0,
+            "triggered_action": {
+              "function": "feedback",
+              "args": [
+                "Die Wahrscheinlichkeit eines positiven Ergebnisses durch das LLM ist reduziert.",
+                "orange"
+              ],
+              "on_event": "dissatisfaction"
+            }
+          }
+        },
+        "meta_conditions": {
+          "all_required_satisfied": {
+            "ID": "c_m1",
+            "type": "equal",
+            "eval_function": "subset",
+            "eval_on": "positive_condition",
+            "eval_param": "required",
+            "results_in": "satisfaction",
+            "eval_dimensions": ["core_conditions"],
+            "value": true,
+            "triggered_action": {
+              "function": "feedback",
+              "args": [
+                "Alle grundlegenden Bedingungen müssen erfüllt sein.",
+                "red"
+              ],
+              "on_event": "dissatisfaction"
+            }
+          }
+        },
+        "core_conditions": {
+          "contains_custom_title": {
+            "ID": "c_core1",
+            "type": "binary",
+            "results_in": "satisfaction",
+            "required": true,
+            "triggered_action": {
+              "function": "feedback",
+              "args": [
+                "Der Kapiteltitel ist noch nicht gesetzt.",
+                "red"
+              ],
+              "on_event": "dissatisfaction"
+            }
+          },
+          "title_is_long": {
+            "ID": "c_core2",
+            "type": "binary",
+            "results_in": "satisfaction",
+            "required": false,
+            "triggered_action": {
+              "function": "feedback",
+              "args": [
+                "Der Kapiteltitel enthält weniger als 5 Zeichen.",
+                "orange"
+              ],
+              "on_event": "dissatisfaction"
+            }
+          },
+          "defined_Produktart": {
+            "ID": "c_core3",
+            "type": "binary",
+            "results_in": "satisfaction",
+            "required": true,
+            "triggered_action": {
+              "function": "feedback",
+              "args": [
+                "In den Gerätedaten ist keine Produktart definiert.",
+                "red"
+              ],
+              "on_event": "dissatisfaction"
+            }
+          },
+          "defined_Produkttyp": {
+            "ID": "c_core4",
+            "type": "binary",
+            "results_in": "satisfaction",
+            "required": false,
+            "triggered_action": {
+              "function": "feedback",
+              "args": [
+                "In den Gerätedaten ist kein Produkttyp definiert.",
+                "orange"
+              ],
+              "on_event": "dissatisfaction"
+            }
+          },
+          "defined_Auftraggeber": {
+            "ID": "c_core5",
+            "type": "binary",
+            "results_in": "satisfaction",
+            "required": true,
+            "triggered_action": {
+              "function": "feedback",
+              "args": [
+                "In den grundlegenden Informationen ist kein Auftraggeber definiert.",
+                "red"
+              ],
+              "on_event": "dissatisfaction"
+            }
+          },
+          "defined_Auftragsdatum": {
+            "ID": "c_core6",
+            "type": "binary",
+            "results_in": "satisfaction",
+            "required": false,
+            "triggered_action": {
+              "function": "feedback",
+              "args": [
+                "In den grundlegenden Informationen ist kein Auftragsdatum definiert.",
+                "orange"
+              ],
+              "on_event": "dissatisfaction"
+            }
+          },
+          "chapter_info_present": {
+            "ID": "c_core7",
+            "type": "binary",
+            "results_in": "satisfaction",
+            "required": true,
+            "triggered_action": {
+              "function": "feedback",
+              "args": [
+                "Die Informationen zum Kapitel sind nicht definiert.",
+                "red"
+              ],
+              "on_event": "dissatisfaction"
+            }
+          },
+          "chapter_info_size_sufficient": {
+            "ID": "c_core8",
+            "type": "binary",
+            "results_in": "satisfaction",
+            "required": false,
+            "triggered_action": {
+              "function": "feedback",
+              "args": [
+                "Es gibt weniger als 5 Wörter in den Kapitelinformationen.",
+                "orange"
+              ],
+              "on_event": "dissatisfaction"
+            }
+          }
+        },
+        "keywords": [],
+        "antonyms": []
+      }
+    },
+
+    "Technische_Daten": {
+      "meta_information": {
+        "proof_order": [
+          "keywords",
+          "antonyms",
+          "core_conditions",
+          "meta_conditions",
+          "aggregate_conditions",
+          "attribute_conditions"
+        ],
+        "pre_checked": ["keywords", "antonyms", "core_conditions"],
+        "positive_attributes": ["score"],
+        "negative_attributes": ["penalty", "required"],
+        "base_sets": {
+          "attributes": ["score", "penalty", "required"],
+          "should_satisfy": ["satisfaction"]
+        },
+        "abbreviations": {
+          "meta_conditions": "c_m",
+          "attribute_conditions": "c_attr",
+          "aggregate_conditions": "c_aggr",
+          "core_conditions": "c_core",
+          "sat_conditions": "c_sat",
+          "unsat_conditions": "c_unsat",
+          "keywords": "kw",
+          "antonyms": "ant",
+          "attributes": "attr",
+          "required": "req",
+          "satisfaction": "sat",
+          "disatisfaction": "unsat",
+          "evaluated_conditions": "c_eval"
+        },
+        "functions": {
+          "feedback": {
+            "name": "feedback",
+            "description": "Display feedback message to user",
+            "function": "IO.puts(&1)"
+          },
+          "sum": {
+            "name": "sum",
+            "function": "&Enum.sum/1",
+            "input_type": "list"
+          },
+          "compare": {
+            "name": "compare",
+            "function": "&(Enum.uniq(&1) |> length() == 1)"
+          }
+        }
+      },
+      "conditions": {
+        "attribute_conditions": {},
+        "aggregate_conditions": {
+          "minimum_non_required_conditions": {
+            "ID": "c_aggr1",
+            "type": "maximum",
+            "eval_function": "sum",
+            "eval_on": "negative_condition",
+            "results_in": "satisfaction",
+            "eval_dimensions": ["core_conditions", "meta_conditions"],
+            "value": 0,
+            "triggered_action": {
+              "function": "feedback",
+              "args": [
+                "Die Wahrscheinlichkeit eines positiven Ergebnisses durch das LLM ist reduziert.",
+                "orange"
+              ],
+              "on_event": "dissatisfaction"
+            }
+          }
+        },
+        "meta_conditions": {
+          "all_required_satisfied": {
+            "ID": "c_m1",
+            "type": "equal",
+            "eval_function": "subset",
+            "eval_on": "positive_condition",
+            "eval_param": "required",
+            "results_in": "satisfaction",
+            "eval_dimensions": ["core_conditions"],
+            "value": true,
+            "triggered_action": {
+              "function": "feedback",
+              "args": [
+                "Alle grundlegenden Bedingungen müssen erfüllt sein.",
+                "red"
+              ],
+              "on_event": "dissatisfaction"
+            }
+          }
+        },
+        "core_conditions": {
+          "contains_custom_title": {
+            "ID": "c_core1",
+            "type": "binary",
+            "results_in": "satisfaction",
+            "required": true,
+            "triggered_action": {
+              "function": "feedback",
+              "args": [
+                "Der Kapiteltitel ist noch nicht gesetzt.",
+                "red"
+              ],
+              "on_event": "dissatisfaction"
+            }
+          },
+          "title_is_long": {
+            "ID": "c_core2",
+            "type": "binary",
+            "results_in": "satisfaction",
+            "required": true,
+            "triggered_action": {
+              "function": "feedback",
+              "args": [
+                "Der Kapiteltitel enthält weniger als 5 Zeichen.",
+                "red"
+              ],
+              "on_event": "dissatisfaction"
+            }
+          },
+          "defined_Produktart": {
+            "ID": "c_core3",
+            "type": "binary",
+            "results_in": "satisfaction",
+            "required": true,
+            "triggered_action": {
+              "function": "feedback",
+              "args": [
+                "In den Gerätedaten ist keine Produktart definiert.",
+                "red"
+              ],
+              "on_event": "dissatisfaction"
+            }
+          },
+          "defined_Produkttyp": {
+            "ID": "c_core4",
+            "type": "binary",
+            "results_in": "satisfaction",
+            "required": true,
+            "triggered_action": {
+              "function": "feedback",
+              "args": [
+                "In den Gerätedaten ist kein Produkttyp definiert.",
+                "red"
+              ],
+              "on_event": "dissatisfaction"
+            }
+          },
+          "defined_Auftraggeber": {
+            "ID": "c_core5",
+            "type": "binary",
+            "results_in": "satisfaction",
+            "required": false,
+            "triggered_action": {
+              "function": "feedback",
+              "args": [
+                "In den grundlegenden Informationen ist kein Auftraggeber definiert.",
+                "orange"
+              ],
+              "on_event": "dissatisfaction"
+            }
+          },
+          "defined_Auftragsdatum": {
+            "ID": "c_core6",
+            "type": "binary",
+            "results_in": "satisfaction",
+            "required": false,
+            "triggered_action": {
+              "function": "feedback",
+              "args": [
+                "In den grundlegenden Informationen ist kein Auftragsdatum definiert.",
+                "orange"
+              ],
+              "on_event": "dissatisfaction"
+            }
+          },
+          "chapter_info_present": {
+            "ID": "c_core7",
+            "type": "binary",
+            "results_in": "satisfaction",
+            "required": true,
+            "triggered_action": {
+              "function": "feedback",
+              "args": [
+                "Die Informationen zum Kapitel sind nicht definiert.",
+                "red"
+              ],
+              "on_event": "dissatisfaction"
+            }
+          },
+          "chapter_info_size_sufficient": {
+            "ID": "c_core8",
+            "type": "binary",
+            "results_in": "satisfaction",
+            "required": false,
+            "triggered_action": {
+              "function": "feedback",
+              "args": [
+                "Es gibt weniger als 5 Wörter in den Kapitelinformationen.",
+                "orange"
+              ],
+              "on_event": "dissatisfaction"
+            }
+          }
+        },
+        "keywords": [],
+        "antonyms": []
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+/* Specific styling for deleted entities */
+.colored-entity[data-deleted="true"],
+.colored-entity.marked-for-deletion {
+  background-color: #ffcccc !important;
+  text-decoration: line-through !important;
+  color: #999 !important;
+  border: 1px dashed #ff5555 !important;
+  opacity: 0.85 !important;
+  transition: none !important; /* Prevent transitions from interfering */
+}
+
+/* Ensure these styles have priority */
+.tiptap-content .ProseMirror .colored-entity[data-deleted="true"],
+.tiptap-content .ProseMirror .colored-entity.marked-for-deletion {
+  background-color: #ffcccc !important;
+  text-decoration: line-through !important;
+  color: #999 !important;
+  border: 1px dashed #ff5555 !important;
+  opacity: 0.85 !important;
+}
+
+/* Add styling for the entity dropdown when entity is deleted */
+.entity-controls-overlay:has(+ .colored-entity[data-deleted="true"]),
+.entity-controls-overlay:has(+ .colored-entity.marked-for-deletion) {
+  background-color: #ffeeee !important;
+  border-color: #ff5555 !important;
+}

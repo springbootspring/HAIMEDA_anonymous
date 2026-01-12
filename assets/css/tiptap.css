@@ -1,0 +1,775 @@
+/* TipTap Editor Styles - Simplified version */
+.tiptap-editor {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  min-height: 200px; /* Ensure there's enough space for the loading overlay */
+}
+
+.tiptap-toolbar {
+  background: #f5f5f5;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tiptap-content {
+  min-height: 50vh;
+  padding: 16px;
+  outline: none;
+  cursor: text;
+}
+
+/* Basic text styling */
+.tiptap-content p {
+  margin-bottom: 1em;
+}
+
+.tiptap-content h1,
+.tiptap-content h2,
+.tiptap-content h3 {
+  font-weight: bold;
+  margin-bottom: 0.6em;
+}
+
+.tiptap-content h1 {
+  font-size: 1.8em;
+}
+.tiptap-content h2 {
+  font-size: 1.5em;
+}
+.tiptap-content h3 {
+  font-size: 1.2em;
+}
+
+/* Lists */
+.tiptap-content ul {
+  list-style-type: disc;
+  padding-left: 1.5em;
+  margin-bottom: 1em;
+}
+.tiptap-content ol {
+  list-style-type: decimal;
+  padding-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+/* Entity styling - IMPROVED for robust boundary rendering */
+.colored-entity {
+  background-color: #d8b5ff;
+  padding: 2px 4px;
+  border-radius: 2px;
+  display: inline !important; /* Changed from inline-block to inline to allow line breaking */
+  position: relative;
+  cursor: pointer !important;
+  border: 1px solid transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  margin: 0 1px !important; /* Slight margin adjustments to avoid excessive spacing */
+  transition: border-color 0.15s ease;
+  z-index: 100 !important;
+  pointer-events: auto !important;
+  vertical-align: baseline;
+  box-sizing: border-box;
+  /* Force visible entities regardless of position */
+  min-height: 1.4em;
+  min-width: 0.8em;
+  /* Ensure text wraps appropriately within entities */
+  white-space: normal !important;
+  word-break: break-word !important; /* Allow breaking within words if needed */
+  word-wrap: break-word !important; /* Legacy support */
+  /* Make clicking more accurate with a transparent outline */
+  outline: 4px solid transparent;
+  /* Add box-decoration-break to handle line breaks within entity */
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* Improved rendering for adjacent entities */
+.colored-entity + .colored-entity {
+  margin-left: 2px !important;
+}
+
+/* Add pseudo-elements for better boundary rendering */
+.colored-entity::before {
+  content: "\200B"; /* Zero-width space before */
+  display: inline;
+  width: 0;
+  pointer-events: none;
+  /* Ensure this space is always present */
+  visibility: visible !important;
+}
+
+.colored-entity::after {
+  content: "\200B"; /* Zero-width space after */
+  display: inline;
+  width: 0;
+  pointer-events: none;
+  /* Ensure this space is always present */
+  visibility: visible !important;
+}
+
+/* Enhanced style for paragraphs containing entities */
+p:has(.colored-entity) {
+  min-height: 1.5em; /* Ensure paragraph has minimum height */
+  position: relative; /* Create stacking context */
+}
+
+/* Special style for entities at paragraph boundaries */
+p > .colored-entity:first-child {
+  margin-left: 0;
+  position: relative;
+}
+
+p > .colored-entity:last-child {
+  margin-right: 1px !important; /* Control whitespace better after entity at paragraph end */
+  position: relative;
+}
+
+/* Fix for proper cursor display and click handling */
+.ProseMirror .colored-entity {
+  cursor: pointer !important;
+  display: inline !important; /* Changed from inline-block to inline */
+  white-space: normal !important; /* Changed from pre-wrap to normal */
+  vertical-align: baseline !important;
+  line-height: inherit !important;
+  min-height: 1.4em;
+  min-width: 0.8em;
+  pointer-events: auto !important;
+  /* Add padding around entity to make it easier to click */
+  padding: 2px 4px !important;
+  /* Add overflow protection */
+  max-width: 100%;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* Enhanced handling for entities after line breaks */
+.ProseMirror p > br + .colored-entity,
+.ProseMirror [data-type="hardBreak"] + .colored-entity,
+.ProseMirror [data-type="hardBreak"] + * + .colored-entity {
+  margin-left: 2px !important;
+  display: inline-block !important;
+  position: relative !important;
+}
+
+/* Reduce space between hardBreak and entities to avoid extra whitespace */
+.ProseMirror [data-type="hardBreak"] + .colored-entity {
+  margin-left: 0 !important;
+}
+
+/* Ensure entities after hardBreaks are clearly visible */
+.ProseMirror [data-type="hardBreak"] + .colored-entity::before,
+.ProseMirror [data-type="hardBreak"] + * + .colored-entity::before {
+  content: " \200B"; /* Space followed by zero-width space */
+  display: inline;
+  visibility: visible !important;
+}
+
+/* Fix for extra whitespace preservation around hardBreaks */
+.ProseMirror [data-type="hardBreak"] + span.colored-entity {
+  margin-left: 0.25em !important;
+}
+
+/* Fix for specific case where text node after hardBreak is lost */
+.ProseMirror p > br + .colored-entity {
+  margin-left: 0.5em !important;
+}
+
+/* Ensure the whitespace after hardBreak is properly displayed */
+.tiptap-content p > br + span,
+.tiptap-content [data-type="hardBreak"] + span {
+  display: inline-block !important; /* Ensure it takes space */
+  min-width: 0.25em;
+}
+
+/* Additional handling for entities after hardBreaks */
+.ProseMirror [data-type="hardBreak"] + .colored-entity,
+.ProseMirror [data-type="hardBreak"] + span + .colored-entity,
+.ProseMirror [data-type="hardBreak"] + br + .colored-entity {
+  margin-left: 2px;
+  position: relative;
+  display: inline-block;
+}
+
+/* Improved styles for hardBreaks and entities */
+.ProseMirror [data-type="hardBreak"] {
+  display: block !important;
+  height: 1em;
+  position: relative;
+}
+
+/* Ensure hardBreak is visible in editor */
+.ProseMirror [data-type="hardBreak"]::after {
+  content: "↵";
+  color: #ccc;
+  position: absolute;
+  font-size: 0.8em;
+  opacity: 0.5;
+}
+
+/* Fix entity rendering when immediately after hardBreak */
+.ProseMirror [data-type="hardBreak"] + .colored-entity,
+.ProseMirror [data-type="hardBreak"] + * + .colored-entity {
+  margin-left: 0;
+  display: inline-block !important;
+  position: relative !important;
+}
+
+/* Make hardBreak more reliable in entity context */
+.ProseMirror p > .colored-entity + [data-type="hardBreak"],
+.ProseMirror p > .colored-entity + * + [data-type="hardBreak"] {
+  margin-left: 0.25em !important;
+  margin-right: 0.25em !important;
+}
+
+/* Ensure space after hardbreak is preserved */
+.ProseMirror [data-type="hardBreak"] + span {
+  white-space: pre-wrap !important;
+}
+
+/* Fix for entities across hardBreaks - ensure consistent rendering */
+.ProseMirror
+  p
+  span.colored-entity
+  + [data-type="hardBreak"]
+  + span.colored-entity,
+.ProseMirror
+  p
+  span.colored-entity
+  + *
+  + [data-type="hardBreak"]
+  + span.colored-entity {
+  display: inline-block !important;
+  margin-top: 0.2em !important;
+}
+
+/* Ensure consistent rendering for inline blocks with entities */
+.ProseMirror p:has(.colored-entity) {
+  white-space: pre-wrap !important;
+}
+
+/* Enhanced entity styling specific for hardBreak context */
+.ProseMirror span.colored-entity {
+  white-space: normal !important; /* Allow entity text to wrap properly */
+  display: inline !important; /* Changed from inline-block to inline */
+  word-break: break-word !important; /* Ensure long entity text wraps within the entity */
+  max-width: 100% !important; /* Prevent entity from overflowing container */
+  vertical-align: baseline !important;
+  /* Add overflow handling */
+  overflow-wrap: break-word !important;
+}
+
+/* Fix for text cutoff issues in entity that spans lines */
+.ProseMirror span.colored-entity > span {
+  display: inline !important;
+  white-space: normal !important; /* Changed from pre-wrap to normal */
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* Add support for entities at edges of containers */
+.ProseMirror p .colored-entity:first-child,
+.ProseMirror li .colored-entity:first-child,
+.ProseMirror h1 .colored-entity:first-child,
+.ProseMirror h2 .colored-entity:first-child,
+.ProseMirror h3 .colored-entity:first-child {
+  margin-left: 0 !important;
+  padding-left: 4px !important;
+  display: inline !important;
+}
+
+.ProseMirror p .colored-entity:last-child,
+.ProseMirror li .colored-entity:last-child,
+.ProseMirror h1 .colored-entity:last-child,
+.ProseMirror h2 .colored-entity:last-child,
+.ProseMirror h3 .colored-entity:last-child {
+  margin-right: 0 !important;
+  padding-right: 4px !important;
+  display: inline !important;
+}
+
+/* Ensure entity padding is consistent at edges */
+.ProseMirror *:first-child .colored-entity {
+  margin-top: 0 !important;
+}
+
+.ProseMirror *:last-child .colored-entity {
+  margin-bottom: 0 !important;
+}
+
+/* Fix for wrapping entities near the edge of containers */
+.ProseMirror p {
+  overflow-wrap: break-word !important;
+  word-wrap: break-word !important;
+  word-break: normal !important;
+  hyphens: auto !important;
+}
+
+/* Ensure entities before selection lists are properly rendered */
+.colored-entity + div[data-type="selectionList"],
+p:has(.colored-entity:last-child) + div[data-type="selectionList"] {
+  margin-top: 0.5em !important;
+}
+
+/* Entity controls overlay - IMPROVED to be independent of entity position */
+.entity-controls-overlay {
+  position: fixed;
+  z-index: 9999 !important; /* Ensure it's above everything */
+  background: #333 !important;
+  border: 1px solid #222;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  padding: 8px;
+  min-width: 180px;
+  max-width: 300px;
+  color: #fff !important;
+
+  /* Improved positioning */
+  top: 50%; /* Default to center */
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* Animation */
+  opacity: 0;
+  transition: opacity 0.2s ease;
+
+  /* Ensure it's always clickable */
+  pointer-events: auto !important;
+
+  /* Ensure it's visible */
+  visibility: hidden;
+  display: none;
+}
+
+/* Visible state for the overlay */
+.entity-controls-overlay.visible {
+  opacity: 1;
+  visibility: visible;
+  display: block;
+}
+
+/* Ensure we can click through the backdrop */
+.entity-controls-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: transparent;
+  z-index: 9998; /* Just below the overlay */
+  pointer-events: none; /* Default to letting clicks through */
+}
+
+/* Only capture events when overlay is visible */
+.entity-controls-backdrop.active {
+  pointer-events: auto;
+}
+
+/* Special style for entities at the start of paragraphs */
+p > .colored-entity:first-child {
+  margin-left: 0;
+}
+
+/* Fix for proper cursor display */
+.ProseMirror .colored-entity {
+  cursor: pointer !important;
+  display: inline !important;
+  white-space: pre-wrap !important;
+  vertical-align: baseline !important;
+  line-height: inherit !important;
+  min-height: 1.4em;
+  min-width: 0.8em;
+  pointer-events: auto !important; /* Important override to ensure entity gets clicks */
+}
+
+/* Fix for specific case of entities at line start */
+.ProseMirror p > .colored-entity:first-child::before {
+  content: "\200B";
+  display: inline-block;
+  width: 0;
+}
+
+/* Add a specific style to prevent the editor from capturing entity events */
+.ProseMirror:has(.colored-entity:hover) {
+  cursor: pointer;
+}
+
+/* Entity controls header with buttons */
+.entity-controls-header {
+  display: flex;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #555;
+  padding-bottom: 6px;
+}
+
+/* Delete button in header - Base button styling for both delete and restore */
+.entity-delete-btn,
+.entity-restore-btn {
+  border-radius: 3px;
+  padding: 3px 8px;
+  font-size: 12px;
+  font-weight: normal;
+  cursor: pointer !important;
+  color: white !important;
+  display: inline-block;
+  text-align: center;
+  white-space: nowrap;
+  width: 100%;
+  margin: 0;
+}
+
+/* Style specific to delete button */
+.entity-delete-btn {
+  background-color: #ff6b6b !important;
+  border: 1px solid #ff5252 !important;
+}
+
+/* Style specific to restore button */
+.entity-restore-btn {
+  background-color: #4caf50 !important; /* Green background */
+  border: 1px solid #388e3c !important; /* Darker green border */
+}
+
+/* Hover states */
+.entity-delete-btn:hover {
+  background-color: #ff4d4d !important; /* Slightly darker red on hover */
+}
+
+.entity-restore-btn:hover {
+  background-color: #45a049 !important; /* Slightly darker green on hover */
+}
+
+/* Replacements section */
+.entity-replacements {
+  margin-top: 6px;
+  background-color: #333 !important; /* Dark grey background */
+}
+
+.entity-replacements-title {
+  font-weight: bold;
+  margin-bottom: 4px;
+  font-size: 12px;
+  color: #ccc !important; /* Light grey text for dark background */
+}
+
+.entity-replacement-item {
+  padding: 6px 10px;
+  cursor: pointer !important;
+  border-radius: 3px;
+  margin-bottom: 4px;
+  border: 1px solid #444;
+  font-size: 13px;
+  word-break: break-word;
+  color: #fff !important; /* White text */
+  background-color: #444 !important; /* Slightly lighter grey for items */
+}
+
+.entity-replacement-item:hover {
+  background-color: #555 !important; /* Lighter on hover */
+  border-color: #666;
+}
+
+/* Current text styling */
+.entity-current-text {
+  font-weight: bold;
+  background-color: #3a5a78 !important; /* Dark blue background */
+  border-color: #4c7aa9;
+  color: #fff !important; /* White text */
+}
+
+/* Original text item styling */
+.entity-original-text {
+  font-style: italic;
+  color: #ddd !important; /* Light grey text */
+}
+
+/* Empty state message */
+.entity-no-replacements {
+  color: #aaa !important; /* Light grey text */
+  font-style: italic;
+  padding: 4px 8px;
+}
+
+/* Style for deleted entities */
+.colored-entity.marked-for-deletion {
+  background-color: #ffcccc !important;
+  text-decoration: line-through !important;
+  color: #999 !important;
+  border: 1px dashed #ff5555 !important;
+}
+
+/* Also apply styling when data-deleted is true - fallback for initial render */
+.colored-entity[data-deleted="true"] {
+  background-color: #ffcccc !important;
+  text-decoration: line-through !important;
+  color: #999 !important;
+  border: 1px dashed #ff5555 !important;
+}
+
+/* Enhanced styling for deleted entities */
+.colored-entity.marked-for-deletion,
+.colored-entity[data-deleted="true"] {
+  background-color: #ffcccc !important;
+  text-decoration: line-through !important;
+  color: #999 !important;
+  border: 1px dashed #ff5555 !important;
+  box-shadow: none !important; /* Remove any active shadow */
+  opacity: 0.85; /* Slightly reduce opacity for better visual indication */
+  transition: all 0.2s ease; /* Smooth transition for state changes */
+}
+
+/* Enhanced rules for deleted entities - using more specific selectors and !important */
+.colored-entity.marked-for-deletion,
+.colored-entity[data-deleted="true"],
+span.colored-entity[data-deleted="true"],
+.ProseMirror span.colored-entity[data-deleted="true"],
+.tiptap-content span.colored-entity[data-deleted="true"] {
+  background-color: #ffcccc !important;
+  text-decoration: line-through !important;
+  color: #999 !important;
+  border: 1px dashed #ff5555 !important;
+  box-shadow: none !important;
+  opacity: 0.85 !important;
+}
+
+/* Additional selector for deleted entities to ensure highest specificity */
+.tiptap-editor .tiptap-content .colored-entity[data-deleted="true"] {
+  background-color: #ffcccc !important;
+  text-decoration: line-through !important;
+  color: #999 !important;
+  border: 1px dashed #ff5555 !important;
+}
+
+/* Control buttons in popup */
+.entity-control-btn {
+  cursor: pointer !important;
+  transition: background-color 0.15s;
+}
+
+.entity-control-btn:hover {
+  filter: brightness(0.95);
+}
+
+.entity-replacement-btn:hover {
+  background-color: #e6e6e6 !important;
+}
+
+/* Toolbar buttons */
+.tiptap-toolbar-btn {
+  margin: 0 4px;
+  padding: 4px 8px;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.tiptap-toolbar-btn:hover {
+  background: #e0e0e0;
+}
+
+/* Custom text input section */
+.entity-custom-text {
+  margin-top: 8px;
+}
+
+.entity-custom-text-title {
+  font-weight: bold;
+  margin-bottom: 4px;
+  font-size: 12px;
+  color: #ccc !important;
+}
+
+.entity-custom-text-input {
+  width: 100%;
+  padding: 6px 10px;
+  border-radius: 3px;
+  margin-bottom: 4px;
+  border: 1px solid #444;
+  font-size: 13px;
+  background-color: #444 !important;
+  color: #fff !important;
+  box-sizing: border-box;
+  height: auto; /* Match height of replacement items */
+}
+
+.entity-custom-text-input:focus {
+  outline: none;
+  border-color: #666;
+  background-color: #555 !important;
+}
+
+/* Selection List Styles - Updated for better visibility */
+.selection-list-container {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin: 10px 0;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.selection-list-header {
+  background: #f5f5f5;
+  padding: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+}
+
+.selection-list-toggle {
+  margin-right: 8px;
+  transition: transform 0.2s;
+}
+
+/* Table is hidden by default, but shown when container has expanded class */
+.selection-list-table {
+  width: 100%;
+  border-collapse: collapse;
+  display: none;
+}
+
+.selection-list-container.expanded .selection-list-table {
+  display: table;
+}
+
+.selection-list-table th,
+.selection-list-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.selection-list-table th {
+  background: #f9f9f9;
+  font-weight: bold;
+}
+
+.selection-list-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.selection-list-table tr.deleted-entity {
+  text-decoration: line-through;
+  color: #666 !important;
+  background-color: #ffeef0 !important; /* Lighter red background */
+}
+
+.selection-list-table tr.confirmed-entity {
+  background-color: #e6ffed !important; /* Lighter green background */
+}
+
+/* Add style for transition effects */
+.selection-list-table tr {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.entity-accept-btn,
+.entity-remove-btn,
+.entity-restore-btn,
+.entity-remove-confirm-btn {
+  padding: 4px 8px;
+  margin: 0 3px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.entity-accept-btn {
+  background-color: #4caf50;
+  color: white;
+}
+
+.entity-remove-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.entity-restore-btn {
+  background-color: #2196f3;
+  color: white;
+}
+
+.entity-remove-confirm-btn {
+  background-color: #ff9800;
+  color: white;
+}
+
+.entity-accept-btn:hover {
+  background-color: #45a049;
+}
+
+.entity-remove-btn:hover {
+  background-color: #d32f2f;
+}
+
+.entity-restore-btn:hover {
+  background-color: #0b7dda;
+}
+
+.entity-remove-confirm-btn:hover {
+  background-color: #e68a00;
+}
+
+/* Enhanced styling for selection list buttons */
+.entity-accept-btn.disabled,
+.entity-remove-btn.disabled,
+.entity-restore-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed !important;
+  background-color: #cccccc !important;
+  color: #666666 !important;
+  border-color: #bbbbbb !important;
+}
+
+/* Loading Overlay Styles */
+.tiptap-loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  transition: opacity 0.3s ease;
+}
+
+.tiptap-loading-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tiptap-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+.tiptap-loading-message {
+  font-size: 16px;
+  color: #555;
+  font-weight: 500;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

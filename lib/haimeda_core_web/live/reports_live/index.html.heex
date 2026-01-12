@@ -1,0 +1,181 @@
+<div class="flex flex-col min-h-screen bg-gray-100">
+  <!-- Header flush with edges -->
+  <.app_header class="w-full" page_type="index" />
+
+  <div class="flex-1">
+    <!-- Add padding-top to push content below the fixed header -->
+    <div class="container mx-auto px-4 pt-20 pb-8 h-full">
+      <div class="flex justify-between items-center mb-8">
+        <h1 class="text-2xl font-bold text-gray-900">HAIMEDA - Gutachtenübersicht</h1>
+        <%= if @delete_mode do %>
+          <div class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium">
+            Löschmodus aktiv
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Database status indicator -->
+      <%= if @reports == [] do %>
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <.icon name="hero-exclamation-circle" class="h-5 w-5 text-yellow-400" />
+            </div>
+            <div class="ml-3">
+              <p class="text-sm text-yellow-700">
+                Keine Gutachten gefunden. Erstellen Sie ein neues Gutachten, um zu beginnen.
+              </p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="bg-white shadow rounded-lg">
+        <ul role="list" class="divide-y divide-gray-200">
+          <!-- Create New Report Button/Form -->
+          <li class="p-4 hover:bg-gray-50">
+            <%= if @show_form do %>
+              <form phx-submit="create-report" class="flex flex-col space-y-4">
+                <div class="flex items-center space-x-4">
+                  <div class="flex-shrink-0">
+                    <div class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
+                      <.icon name="hero-document-plus" class="h-6 w-6 text-green-600" />
+                    </div>
+                  </div>
+                  <div class="flex-1">
+                    <input 
+                      type="text" 
+                      name="name"
+                      placeholder="Name des neuen Gutachtens eingeben" 
+                      class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                      value={@report_name}
+                      phx-keyup="update-report-name"
+                    />
+                  </div>
+                </div>
+                <div class="flex justify-end space-x-2">
+                  <button 
+                    type="button"
+                    phx-click="toggle-form"
+                    class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+                  >
+                    Abbrechen
+                  </button>
+                  <button 
+                    type="submit"
+                    class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+                  >
+                    Erstellen
+                  </button>
+                </div>
+              </form>
+            <% else %>
+              <div class="flex items-center space-x-4 cursor-pointer" phx-click="toggle-form">
+                <div class="flex-shrink-0">
+                  <div class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
+                    <.icon name="hero-plus-circle" class="h-6 w-6 text-green-600" />
+                  </div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-lg font-medium text-green-600">Neues Gutachten erstellen</p>
+                  <p class="text-sm text-gray-500">Beginnen Sie mit einem neuen Gutachten</p>
+                </div>
+              </div>
+            <% end %>
+          </li>
+        </ul>
+
+        <!-- Scrollable Reports List -->
+        <div class="overflow-y-auto max-h-[70vh]">
+          <ul role="list" class="divide-y divide-gray-200">
+            <!-- Existing Reports -->
+            <%= if Enum.empty?(@reports) do %>
+              <li class="p-8 text-center text-gray-500">
+                <div class="flex flex-col items-center justify-center space-y-2">
+                  <.icon name="hero-document" class="h-12 w-12 text-gray-300" />
+                  <p>Keine Gutachten vorhanden</p>
+                </div>
+              </li>
+            <% else %>
+              <%= for report <- @reports do %>
+                <li class="p-4 hover:bg-gray-50 cursor-pointer group" phx-click={if !@delete_mode, do: "open-report"} phx-value-id={report["id"]}>
+                  <div class="flex items-center space-x-4">
+                    <div class="flex-shrink-0">
+                      <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                        <.icon name="hero-document-text" class="h-6 w-6 text-blue-600" />
+                      </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <p class="text-sm font-medium text-gray-900 truncate"><%= report["name"] %></p>
+                      <p class="text-sm text-gray-500">
+                        <%= if Map.has_key?(report, "date") do %>
+                          Erstellt am <%= format_date(report["date"]) %>
+                        <% else %>
+                          Erstelldatum nicht verfügbar
+                        <% end %>
+                      </p>
+                    </div>
+                    <!-- Show delete button or chevron based on delete mode -->
+                    <div class="flex-shrink-0">
+                      <%= if @delete_mode do %>
+                        <button 
+                          class="p-2 text-red-600 hover:bg-red-100 rounded-full group-hover:bg-red-50"
+                          phx-click="show-delete-confirmation"
+                          phx-value-report_id={report["id"]}
+                          phx-value-report_name={report["name"]}
+                        >
+                          <.icon name="hero-trash" class="h-5 w-5" />
+                        </button>
+                      <% else %>
+                        <.icon name="hero-chevron-right" class="h-5 w-5 text-gray-400" />
+                      <% end %>
+                    </div>
+                  </div>
+                </li>
+              <% end %>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-4 text-sm text-gray-500">
+        <%= length(@reports) %> Gutachten gefunden
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete confirmation modal -->
+  <%= if @delete_modal do %>
+    <div id="delete-confirmation-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6 mx-4">
+        <div class="mb-4 text-center">
+          <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+            <.icon name="hero-exclamation-triangle" class="h-6 w-6 text-red-600" />
+          </div>
+          <h3 class="text-lg font-medium text-gray-900 mb-2">Gutachten wirklich löschen?</h3>
+          <p class="text-sm text-gray-600 mt-2">
+            Das Gutachten "<span class="font-semibold"><%= @delete_modal.item_label %></span>" wird dauerhaft gelöscht und kann nicht wiederhergestellt werden.
+          </p>
+        </div>
+        <div class="flex items-center justify-between gap-3 mt-5">
+          <button
+            type="button"
+            phx-click="confirm-delete"
+            phx-value-id={@delete_modal.id}
+            phx-value-category={@delete_modal.category}
+            class="w-full inline-flex justify-center items-center rounded-md border border-transparent px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm"
+          >
+            Löschen
+          </button>
+          <button
+            type="button"
+            phx-click="cancel-delete"
+            class="w-full inline-flex justify-center items-center rounded-md border border-gray-300 px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm"
+          >
+            Abbrechen
+          </button>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

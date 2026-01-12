@@ -1,0 +1,35 @@
+/* Styles for the status/log section */
+.log-entry {
+  font-family: "Consolas", "Monaco", monospace;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+/* Chat message styles */
+.chat-message-ai {
+  background-color: #f0f7ff;
+  border-left: 3px solid #3b82f6;
+}
+
+.chat-message-user {
+  background-color: #f0fdf4;
+  border-right: 3px solid #10b981;
+  text-align: right;
+}
+
+/* Other log styling */
+.text-green-400 {
+  color: #34d399;
+}
+
+.text-yellow-400 {
+  color: #fbbf24;
+}
+
+.text-red-400 {
+  color: #f87171;
+}
+
+.text-blue-400 {
+  color: #60a5fa;
+}

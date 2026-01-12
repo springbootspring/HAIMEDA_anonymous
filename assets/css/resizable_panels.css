@@ -1,0 +1,212 @@
+/* Pure CSS resizable panels with full-height draggable borders */
+
+/* Container with resizable columns */
+.resizable-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Left panel with sidebar and logs */
+.left-panel {
+  position: relative;
+  width: 20%;
+  min-width: 150px;
+  max-width: 40%;
+  display: flex;
+  flex-direction: column;
+  background-color: #1f2937; /* bg-gray-800 */
+  color: white;
+  /* Make the entire element resizable, not just the bottom corner */
+  resize: horizontal;
+  overflow: auto;
+}
+
+/* Right panel with chat */
+.right-panel {
+  position: relative;
+  width: 25%;
+  min-width: 200px;
+  max-width: 40%;
+  /* Make the entire element resizable from the left side */
+  resize: horizontal;
+  overflow: auto;
+  /* RTL makes resize work from left side */
+  direction: rtl;
+}
+
+/* Fix the content direction in the right panel */
+.right-panel > .panel-content {
+  direction: ltr;
+}
+
+/* Middle content panel fills remaining space */
+.middle-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 300px; /* Ensure the middle panel doesn't get too small */
+}
+
+/* Add custom resize handles to make the entire height draggable */
+.left-panel::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 5px; /* Wider area for easier grabbing */
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.1);
+  cursor: col-resize;
+  /* Remove pointer-events: none to make resize work */
+  z-index: 10; /* Higher z-index but only for the thin strip */
+}
+
+.right-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px; /* Wider area for easier grabbing */
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
+  cursor: col-resize;
+  /* Remove pointer-events: none to make resize work */
+  z-index: 10; /* Higher z-index but only for the thin strip */
+}
+
+/* Improve handle visibility on hover */
+.left-panel:hover::after {
+  background-color: rgba(59, 130, 246, 0.3); /* blue-500 with opacity */
+}
+
+.right-panel:hover::before {
+  background-color: rgba(59, 130, 246, 0.3); /* blue-500 with opacity */
+}
+
+/* Further highlight when actively resizing */
+.left-panel:active::after {
+  background-color: rgba(59, 130, 246, 0.7);
+}
+
+.right-panel:active::before {
+  background-color: rgba(59, 130, 246, 0.7);
+}
+
+/* Container for panel contents - ensures scrolling works properly */
+.panel-content {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  position: relative; /* Ensure proper stacking context */
+  /* Make sure z-index isn't too high to block resize handle */
+  z-index: 1;
+}
+
+/* Make sidebar navigation have higher z-index than resize handle */
+#sidebar-navigation {
+  position: relative;
+  z-index: 20; /* Higher than resize handles */
+}
+
+/* Ensure all clickable elements in navigation have pointer-events */
+#sidebar-navigation * {
+  pointer-events: auto !important;
+}
+
+/* Prevent text selection during resize for better UX */
+.left-panel:active,
+.right-panel:active {
+  user-select: none;
+}
+
+/* Modify the active state to ONLY disable pointer events on the specific panel content */
+.left-panel:active > .panel-content > *:not(#sidebar-navigation),
+.right-panel:active > .panel-content {
+  pointer-events: none;
+}
+
+/* Make sure the sidebar navigation remains clickable even during resize */
+.left-panel:active #sidebar-navigation,
+.left-panel:active #sidebar-navigation * {
+  pointer-events: auto !important;
+}
+
+/* Firefox-specific styles for better resize behavior */
+@-moz-document url-prefix() {
+  .left-panel::after,
+  .right-panel::before {
+    opacity: 0.3;
+  }
+
+  .left-panel:hover::after,
+  .right-panel:hover::before {
+    opacity: 0.5;
+  }
+}
+
+/* Microsoft Edge adjustments */
+@supports (-ms-ime-align: auto) {
+  .left-panel,
+  .right-panel {
+    resize: none; /* Edge doesn't handle resize properly, so disable it */
+  }
+
+  .left-panel::after,
+  .right-panel::before {
+    position: absolute;
+    width: 8px;
+    height: 100%;
+  }
+}
+
+/* Safari adjustments */
+@supports (-webkit-hyphens: none) and (not (-ms-ime-align: auto)) and
+  (not (-moz-appearance: none)) {
+  .left-panel,
+  .right-panel {
+    /* Safari sometimes has issues with resize, making the handle more prominent helps */
+    overflow: visible;
+  }
+}
+
+/* Ensure consistent heights for the container */
+#editor-container .resizable-container {
+  flex: 1 1 auto;
+  min-height: 0; /* This fixes flex issues in some browsers */
+}
+
+/* Set explicit overflow handling for nested panels */
+.left-panel .panel-content,
+.right-panel .panel-content {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Improve resize handle appearance on all browsers */
+.left-panel,
+.right-panel {
+  position: relative;
+}
+
+/* Add a clickable area for resize handle that doesn't interfere with content */
+.resize-handle-left,
+.resize-handle-right {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 5px;
+  z-index: 10;
+  cursor: col-resize;
+}
+
+.resize-handle-left {
+  right: 0;
+}
+
+.resize-handle-right {
+  left: 0;
+}
